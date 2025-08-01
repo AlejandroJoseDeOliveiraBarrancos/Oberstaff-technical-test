@@ -15,10 +15,10 @@ def print_menu_header(title: str) -> None:
 
 def display_post_titles(posts: List[Dict]) -> None:
     if not posts:
-        print("📭 No posts to display.")
+        print("No posts to display.")
         return
     
-    print("\n📋 Post Titles:")
+    print("\nPost Titles:")
     print_separator()
     
     for i, post in enumerate(posts, 1):
@@ -31,7 +31,7 @@ def display_post_titles(posts: List[Dict]) -> None:
 
 
 def display_json_response(data: Dict, title: str = "API Response") -> None:
-    print(f"\n📄 {title}")
+    print(f"\n{title}")
     print_separator()
     print(json.dumps(data, indent=2, ensure_ascii=False))
     print_separator()

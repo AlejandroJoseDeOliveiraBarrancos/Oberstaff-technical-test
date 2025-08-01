@@ -1,0 +1,287 @@
+{
+	"info": {
+		"_postman_id": "bayma-webhook-collection",
+		"name": "Bayma Webhook Receiver",
+		"description": "Collection for testing the Bayma Webhook Receiver microservice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						""
+					]
+				},
+				"description": "Check if the webhook service is running"
+			},
+			"response": []
+		},
+		{
+			"name": "Receive Webhook",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"event\": \"user.created\",\n    \"message\": \"New user registered successfully\",\n    \"timestamp\": \"2023-12-01T10:30:00Z\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/webhook",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"webhook"
+					]
+				},
+				"description": "Send a webhook notification to the receiver"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Webhooks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/webhooks?skip=0&limit=100",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"webhooks"
+					],
+					"query": [
+						{
+							"key": "skip",
+							"value": "0"
+						},
+						{
+							"key": "limit",
+							"value": "100"
+						}
+					]
+				},
+				"description": "Retrieve all webhook logs with pagination"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Webhook by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/webhooks/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"webhooks",
+						"1"
+					]
+				},
+				"description": "Retrieve a specific webhook log by ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Test Different Events",
+			"item": [
+				{
+					"name": "User Created Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"event\": \"user.created\",\n    \"message\": \"New user account created\",\n    \"timestamp\": \"2023-12-01T10:30:00Z\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/webhook",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"webhook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payment Completed Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"event\": \"payment.completed\",\n    \"message\": \"Payment processed successfully\",\n    \"timestamp\": \"2023-12-01T11:45:00Z\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/webhook",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"webhook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order Shipped Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"event\": \"order.shipped\",\n    \"message\": \"Order has been shipped\",\n    \"timestamp\": \"2023-12-01T14:20:00Z\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/webhook",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"webhook"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Error Testing",
+			"item": [
+				{
+					"name": "Invalid JSON",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"event\": \"user.created\",\n    \"message\": \"New user registered\",\n    \"timestamp\": \"2023-12-01T10:30:00Z\",\n    \"extra_field\": \"should_be_ignored\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/webhook",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"webhook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing Required Fields",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"event\": \"user.created\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/webhook",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"webhook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Non-existent Webhook ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/webhooks/999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"webhooks",
+								"999"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+} 
